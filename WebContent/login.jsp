@@ -14,7 +14,9 @@ pageEncoding="ISO-8859-1"%>
 		<div class="container">
 			<div class="row">
 				<div class="col-6">
-				<h1>Login</h1>
+				<br>
+				<h1>Gadget Badget</h1>
+				<h2>Login</h2>
 				<form id="formLogin">
 				 Username: <input id="txtUsername" name="txtUsername" type="text" class="form-control form-control-sm">
 			 

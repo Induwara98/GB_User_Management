@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 
 
 public class UserController {
+	
+	UserAdminController users = new UserAdminController();
 
 	//Database Connection
 		private Connection connect() 
@@ -67,23 +69,37 @@ public class UserController {
 				preparedStmt.setString(8, userType);
 				// execute the statement
 				preparedStmt.execute(); 
-				 con.close(); 
+				con.close(); 
+				String newUsers = users.readUsers(); 
+				output = "{\"status\":\"success\", \"data\": \"" +newUsers + "\"}"; 
 				 
-				 output = "Inserted successfully"; 
-			} 
-			catch (Exception e) 
-			{ 
-				 output = "Error while inserting the item."; 
-				 System.err.println(e.getMessage()); 
+			}catch (Exception e) { 
+				output = "{\"status\":\"error\", \"data\": \"Error while inserting the item.\"}"; 
+				System.err.println(e.getMessage()); 
+				 
 			} 
 				 
 			return output; 
-		}
+				 
+		}  
 
 	//Update User
 		public String updateUser(String userid, String fname, String lname, String pnumber, String address,String password,String type)
 		{ 
 			 String output = ""; 
+			 
+				int type1 = Integer.parseInt(type);
+				String userType = null;
+				
+				if(type1 == 1) {
+					userType="Investor";
+				}else if(type1 == 2) {
+					userType="Researcher";
+				}else if(type1 == 3) {
+					userType="Customer";
+				}else if(type1 == 4) {
+					userType="Administrator";
+				}
 			 try
 			 { 
 				 	Connection con = connect(); 
@@ -103,22 +119,23 @@ public class UserController {
 				 	preparedStmt.setString(4, address); 
 				 	preparedStmt.setString(5, fname+"@GB.lk"); 
 				 	preparedStmt.setString(6, password); 
-				 	preparedStmt.setString(7, type); 
+				 	preparedStmt.setString(7, userType); 
 				 	preparedStmt.setInt(8, Integer.parseInt(userid)); 
+				 
 				
-				 	// execute the statement
+				 // execute the statement
 				 	preparedStmt.execute(); 
 				 	con.close(); 
-				 	output = "Updated successfully"; 
+				 	String newUsers = users.readUsers();
+					 output = "{\"status\":\"success\", \"data\": \"" +newUsers + "\"}"; 
+			 } catch (Exception e) { 
+					 
+				 output = "{\"status\":\"error\", \"data\": \"Error while updating the item.\"}"; 
+				 System.err.println(e.getMessage()); 
 			 } 
-			 catch (Exception e) 
-			 { 
-				 	output = "Error while updating the item."; 
-				 	System.err.println(e.getMessage()); 
-			 } 
-			 
+					
 			 return output; 
-			 
+					 
 		}
 
 	//Delete User
@@ -145,13 +162,15 @@ public class UserController {
 				preparedStmt.execute(); 
 				con.close(); 
 		 
-				output = "Deleted successfully"; 
-		 } 
-		 catch (Exception e) 
-		 { 
-			 output = "Error while deleting the item."; 
-			 System.err.println(e.getMessage()); 
-		 } 
-		 return output;
-		 } 
+				String newUsers = users.readUsers(); 
+				 output = "{\"status\":\"success\", \"data\": \"" + newUsers + "\"}"; 
+			
+			}catch (Exception e){ 
+				 output = "{\"status\":\"error\", \"data\": \"Error while deleting the item.\"}"; 
+				 System.err.println(e.getMessage()); 
+			} 
+				 
+			return output; 
+				 
+		 }
 }

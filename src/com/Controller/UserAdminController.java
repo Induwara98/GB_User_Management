@@ -24,7 +24,8 @@ public class UserAdminController {
 	//Admin read users
 	public String readUsers() 
 	{ 
-		 String output = "";
+		String output = ""; 
+		 
 		 try
 		 { 
 			 Connection con = connect(); 
@@ -33,7 +34,7 @@ public class UserAdminController {
 			 {return "Error while connecting to the database for reading."; } 
 		 
 			 // Prepare the html table to be displayed
-			 output = "<table border='1'><tr><th>User ID</th><th>Name</th><th>Phone Number</th><th>Address</th><th>User Name</th><th>Password</th><th>Type</th></tr>"; 
+			 output = "<table border='1'><tr><th>User ID</th><th>First Name</th><th>Last Name</th><th>Phone Number</th><th>Address</th><th>User Name</th><th>Password</th><th>Type</th></tr>"; 
 		 
 			 String query = "select * from user"; 
 			 Statement stmt = con.createStatement(); 
@@ -52,18 +53,19 @@ public class UserAdminController {
 				 String type = rs.getString("type");
 				 // Add into the html table
 				 output += "<tr><td>" + userid + "</td>"; 
-				 output += "<td>" + fname+" "+lname + "</td>";
+				 output += "<td>" + fname+"</td>";
+				 output += "<td>" +lname + "</td>";
 				 output += "<td>" + pnumber + "</td>"; 
 				 output += "<td>" + address + "</td>"; 
 				 output += "<td>" + username + "</td>"; 
 				 output += "<td>" + password + "</td>"; 
 				 output += "<td>" + type + "</td>"; 
 				 // buttons
-				 output += "<td><input name='btnUpdate' type='button' value='Update' class='btn btn-secondary'></td>"
-						+ "<td><input name='btnDelete' type='submit' value='Delete' class='btn btn-danger'></td>"
-						+ "<input name='userid' type='hidden' value='" + userid 
-						+ "'>" + "</form></td></tr>"; 
-		 } 
+				 output += "<td><input name='btnUpdate' type='button' value='Update' "
+							+ "class='btnUpdate btn btn-secondary' data-userid='" + userid + "'></td>"
+							+ "<td><input name='btnRemove' type='button' value='Remove' "
+							+ "class='btnRemove btn btn-danger' data-userid='" + userid + "'></td></tr>"; 
+			 } 
 		 
 		con.close(); 
 		 
